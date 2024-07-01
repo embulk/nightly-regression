@@ -1,0 +1,21 @@
+name: Input with PostgreSQL
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: "0 18 * * *"  # 3am in Asia/Tokyo
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # push: always run.
+    # pull_request: run only when the PR is submitted from a forked repository, not within this repository.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up OpenJDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: 8
+        distribution: "temurin"
