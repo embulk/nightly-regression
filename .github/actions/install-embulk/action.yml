@@ -1,0 +1,28 @@
+name: "Download Embulk"
+
+inputs:
+  version:
+    description: "Version of Embulk to download"
+    type: string
+    required: false
+    default: "0.11.4"
+
+runs:
+  using: "composite"
+  steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - id: download
+      name: Download Embulk ${{ inputs.version }}
+      env:
+        EMBULK_URL: "https://github.com/embulk/embulk/releases/download/v${{ inputs.version }}/embulk-${{ inputs.version }}.jar"
+      run: curl --location --output "embulk.jar" "${EMBULK_URL}"
+      shell: bash
+
+    - id: version
+      name: Create a version file
+      env:
+        EMBULK_VERSION: ${{ inputs.version }}
+      run: echo "${EMBULK_VERSION}" > embulk-${EMBULK_VERSION}.txt
+      shell: bash
