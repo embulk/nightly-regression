@@ -6,19 +6,29 @@ on:
     - cron: "0 18 * * *"  # 3am in Asia/Tokyo
 jobs:
   input-with-postgresql:
-    runs-on: ubuntu-latest
     # push: always run.
     # pull_request: run only when the PR is submitted from a forked repository, not within this repository.
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
+      matrix:
+        java: [ 8, 11, 17, 21 ]
+        postgres: [ "postgres:12", "postgres:13", "postgres:14", "postgres:15", "postgres:16" ]
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: ${{ matrix.postgres }}
+        ports:
+        - "5432:5432"
+        env:
+          POSTGRES_PASSWORD: postgres
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up OpenJDK 8
+    - name: Set up OpenJDK ${{ matrix.java }}
       uses: actions/setup-java@v4
       with:
-        java-version: 8
+        java-version: ${{ matrix.java }}
         distribution: "temurin"
 
     - name: Download Embulk
