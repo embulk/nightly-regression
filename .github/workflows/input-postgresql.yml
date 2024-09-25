@@ -42,3 +42,8 @@ jobs:
 
     - name: List files under the Embulk home directory
       run: ls -laR "$HOME/.embulk/"
+
+    - name: Access PostgreSQL
+      run: psql -h localhost -U postgres -d postgres -c "\l"
+      env:
+        PGPASSWORD: postgres
