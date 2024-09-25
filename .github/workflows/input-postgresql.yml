@@ -22,6 +22,7 @@ jobs:
         - "5432:5432"
         env:
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: md5  # scram-sha-256 is default in PostgreSQL 14+, but needs the newer JDBC driver.
     steps:
     - uses: actions/checkout@v4
 
