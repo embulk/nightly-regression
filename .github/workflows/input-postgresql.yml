@@ -34,5 +34,11 @@ jobs:
     - name: Download Embulk
       uses: ./.github/actions/install-embulk
 
-    - name: List files
-      run: ls -la
+    - name: List files under the user home directory
+      run: ls -la "$HOME"
+
+    - name: Install embulk-input-postgresql
+      run: java -jar "embulk.jar" install "org.embulk:embulk-input-postgresql:0.13.2"
+
+    - name: List files under the Embulk home directory
+      run: ls -laR "$HOME/.embulk/"
