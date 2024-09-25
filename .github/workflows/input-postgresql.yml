@@ -16,13 +16,15 @@ jobs:
         postgres: [ "postgres:12", "postgres:13", "postgres:14", "postgres:15", "postgres:16" ]
     runs-on: ubuntu-latest
     services:
+      # scram-sha-256 is default in PostgreSQL 14+, but needs the newer JDBC driver.
       postgres:
         image: ${{ matrix.postgres }}
         ports:
         - "5432:5432"
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: md5  # scram-sha-256 is default in PostgreSQL 14+, but needs the newer JDBC driver.
+          POSTGRES_HOST_AUTH_METHOD: "md5"
+          POSTGRES_INITDB_ARGS: "--auth-host=md5"
     steps:
     - uses: actions/checkout@v4
 
