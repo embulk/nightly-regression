@@ -1,0 +1,14 @@
+in:
+  type:
+    source: maven
+    group: "org.embulk"
+    name: postgresql
+    version: "0.13.2"
+  host: localhost
+  user: postgres
+  password: postgres
+  database: postgres
+  table: test
+  select: "id, name"
+out:
+  type: stdout

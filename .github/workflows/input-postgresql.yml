@@ -57,3 +57,6 @@ jobs:
       run: psql -h localhost -U postgres -d postgres -c "select * from test;"
       env:
         PGPASSWORD: postgres
+
+    - name: Run Embulk
+      run: java -jar "embulk.jar" run "input-postgresql/postgresql.yml"
